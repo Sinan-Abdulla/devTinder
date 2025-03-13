@@ -5,12 +5,19 @@ app.use("/test",(req, res) => {
     res.send("hello from server!");
 });
 
+
 app.use("/hello", (req, res) => {
-    res.send("hello hello ");
+    res.send("hello helloo ");
+});
+
+app.use("/",(req,res)=>{
+    res.send("namsthe kuttu");
 });
 
 
-app.listen(3000, () => {
-    console.log("server is running on port 3000");
+
+
+app.listen(7777, () => {
+    console.log("server is running on port 7777");
 });
 
