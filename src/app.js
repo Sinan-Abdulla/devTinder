@@ -1,18 +1,23 @@
 const express = require("express");
 const app = express();
 
-app.use("/test",(req, res) => {
-    res.send("hello from server!");
-});
-
-
-app.use("/hello", (req, res) => {
-    res.send("hello helloo ");
-});
-
-app.use("/",(req,res)=>{
-    res.send("namsthe kuttu");
-});
+app.use(
+    "/user",
+    [(req, res, next) => {
+        console.log("handling the route user!!");
+        //res.send("response!!");
+        next();
+    },
+    (req, res, next) => {
+        console.log("handling the route user 2!!");
+        //res.send("2nd response!!");
+        next();
+    }],
+    (req, res) => {
+        console.log("handling the route user 3!!");
+        res.send("3nd response!!");
+    },
+);
 
 
 
