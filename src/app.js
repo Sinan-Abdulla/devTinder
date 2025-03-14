@@ -1,24 +1,26 @@
 const express = require("express");
 const app = express();
+const { adminAuth, userAuth } = require("./middlewares/auth");
 
-app.use(
-    "/user",
-    [(req, res, next) => {
-        console.log("handling the route user!!");
-        //res.send("response!!");
-        next();
-    },
-    (req, res, next) => {
-        console.log("handling the route user 2!!");
-        //res.send("2nd response!!");
-        next();
-    }],
-    (req, res) => {
-        console.log("handling the route user 3!!");
-        res.send("3nd response!!");
-    },
-);
+app.use("/admin", adminAuth);
 
+app.post("/user/login", (req, res) => {
+    res.send("user in logged in succesfully");
+});
+
+app.get("/user/data", userAuth, (req, res) => {
+    res.send("user page");
+});
+
+
+app.get("/admin/dashboard", (req, res) => {
+    res.send("welcome to dashboard");
+});
+
+
+app.get("/admin/getAllData", (req, res) => {
+    res.send("get all data");
+});
 
 
 
