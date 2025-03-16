@@ -13,6 +13,10 @@
   "author": "sinan abdulla",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.2"
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "module": "^1.2.5",
+    "mogoose": "^0.0.1-security",
+    "mongoose": "^8.12.1"
   }
 }
