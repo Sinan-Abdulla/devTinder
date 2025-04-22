@@ -10,4 +10,25 @@ const validateSignUpData = (req) => {
         throw new Error("password is not valid");
     }
 };
-module.exports = { validateSignUpData };  //export the function to use it in other files
+
+const validateEditProfileData = (req) => {
+    const allowedEditFields = [
+        "firstName",
+        "lastName",
+        "email",
+        "gender",
+        "age",
+        "about",
+        "skills",
+    ];
+    const isEditAllowed = Object.keys(req.body).every((field) =>
+        allowedEditFields.includes(field)
+    );
+    return isEditAllowed;
+};
+
+
+module.exports = {
+    validateSignUpData,
+    validateEditProfileData,
+}; 
