@@ -25,9 +25,22 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        enum : ["male", "female", "other"],
-        message : "{VALUE} is not supported"
+        enum: ["male", "female", "other"],
+        message: "{VALUE} is not supported"
     },
+    photoUrl: {
+        type: String,
+        default: "https://geographyandyou.com/images/user-profile.png",
+        validate(value) {
+            if (!validator.isURL(value)) {
+                throw new Error("Invalid Photo URL: " + value);
+            }
+        }
+    },
+    about: {
+        type: String,
+        default: "This is a default about of the user!",
+      },
 },
     {
         timestamps: true,
@@ -39,7 +52,7 @@ userSchema.methods.getJWT = async function () {
         expiresIn: '7d',
     });
     return token;
-}; 
+};
 userSchema.methods.validatePassword = async function (passwordInputByUser) {
     const user = this;
     const passwordHash = user.password;
