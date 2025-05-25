@@ -30,7 +30,7 @@ authRouter.post("/signup", async (req, res) => {
             expires: new Date(Date.now() + 900000),
 
         });
-        res.json({ message: "User created successfully", data: savedUser });
+        res.json({ message: "User created successfuly", data: savedUser });
     } catch (error) {
         res.status(400).send("error:" + error.message);
     }
