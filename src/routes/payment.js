@@ -2,7 +2,7 @@ const express = require('express');
 const { userAuth } = require('../middlewares/auth');
 const paymentRouter = express.Router();
 const razorpayInstance = require('../utiles/razorpay');
-const payment = require('../models/payment');
+const payment = require("../models/payment");
 const { membershipAmount } = require('../utiles/constants');
 const User = require('../models/user');
 const { validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils');
@@ -58,13 +58,13 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
         );
 
         if (!isWebhookValid) {
-            console.log("INvalid Webhook Signature");
+            console.log("Invalid Webhook Signature");
             return res.status(400).json({ error: "Invalid webhook signature" });
         }
 
         const paymentDetails = req.body.payload.payment.entity;
 
-        const payment = await payment.findOne({ orderId: paymentDetails.order_id });
+        const payment = await Payment.findOne({ orderId: paymentDetails.order_id });
         payment.status = paymentDetails.status;
         await payment.save();
 
@@ -72,7 +72,7 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
         user.isPremium = true;
         user.membershipType = payment.notes.membershipType;
 
-        
+
         await user.save();
 
         //if (req.body.event === 'payment.captured') {
