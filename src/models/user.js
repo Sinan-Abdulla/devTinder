@@ -28,6 +28,13 @@ const userSchema = new mongoose.Schema({
         enum: ["male", "female", "other"],
         message: "{VALUE} is not supported"
     },
+    isPremium: {
+        type: Boolean,
+        default: false
+    },
+    membershipType: {
+        type: String,
+    },
     photoUrl: {
         type: String,
         default: "https://geographyandyou.com/images/user-profile.png",
@@ -40,7 +47,7 @@ const userSchema = new mongoose.Schema({
     about: {
         type: String,
         default: "This is a default about of the user!",
-      },
+    },
 },
     {
         timestamps: true,

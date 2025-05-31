@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "micromatch": "^4.0.8",
     "mongoose": "^8.12.1",
+    "razorpay": "^2.9.6",
     "validator": "^13.15.0",
     "vinyl-fs": "^4.0.0",
     "yargs-parser": "^21.1.1"
