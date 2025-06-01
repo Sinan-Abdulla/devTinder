@@ -2,7 +2,7 @@ const express = require('express');
 const { userAuth } = require('../middlewares/auth');
 const paymentRouter = express.Router();
 const razorpayInstance = require('../utiles/razorpay');
-const payment = require("../models/payment");
+const Payment = require("../models/payment")
 const User = require('../models/user');
 const { membershipAmount } = require('../utiles/constants');
 const { validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils');
@@ -11,6 +11,17 @@ paymentRouter.post("/payment/Create", userAuth, async (req, res) => {
     try {
         const { membershipType } = req.body;
         const { firstName, lastName, emailId } = req.user
+
+        console.log("membershipType received:", membershipType);
+        console.log("membershipAmount keys:", Object.keys(membershipAmount));
+
+
+        if (!membershipAmount[membershipType]) {
+            return res.status(400).json({ error: "Invalid membershipType or amount not found" });
+        }
+
+        console.log("User:", req.user);
+        console.log("MembershipType:", membershipType);
 
 
 
@@ -26,7 +37,7 @@ paymentRouter.post("/payment/Create", userAuth, async (req, res) => {
                 membershipType: membershipType,
             },
         });
-        const Payment = new Payment({
+        const payment = new Payment({
             userId: req.user._id,
             orderId: order.id,
             status: order.status,
@@ -35,7 +46,7 @@ paymentRouter.post("/payment/Create", userAuth, async (req, res) => {
             receipt: order.receipt,
             notes: order.notes,
         });
-        const savedPayment = await Payment.save();
+        const savedPayment = await payment.save();
 
         res.json({ ...savedPayment.toJSON(), keyId: process.env.RAZORPAY_KEY_ID });
     } catch (err) {
