@@ -77,6 +77,7 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
 
         // Udpate my payment Status in DB
         const paymentDetails = req.body.payload.payment.entity;
+        console.log("Webhook Event:", req.body.event);
 
         const payment = await Payment.findOne({ orderId: paymentDetails.order_id });
         payment.status = paymentDetails.status;
