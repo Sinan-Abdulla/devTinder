@@ -59,8 +59,9 @@ paymentRouter.post("/payment/Create", userAuth, async (req, res) => {
 
 paymentRouter.post("/payment/webhook", async (req, res) => {
     try {
-        console.log("webhook called");
+        console.log("Webhook Called");
         const webhookSignature = req.get("X-Razorpay-Signature");
+        console.log("Webhook Signature", webhookSignature);
 
         const isWebhookValid = validateWebhookSignature(
             JSON.stringify(req.body),
@@ -69,34 +70,39 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
         );
 
         if (!isWebhookValid) {
-            console.log("Invalid Webhook Signature");
-            return res.status(400).json({ error: "Invalid webhook signature" });
+            console.log("INvalid Webhook Signature");
+            return res.status(400).json({ msg: "Webhook signature is invalid" });
         }
+        console.log("Valid Webhook Signature");
 
+        // Udpate my payment Status in DB
         const paymentDetails = req.body.payload.payment.entity;
 
         const payment = await Payment.findOne({ orderId: paymentDetails.order_id });
         payment.status = paymentDetails.status;
         await payment.save();
+        console.log("Payment saved");
 
         const user = await User.findOne({ _id: payment.userId });
         user.isPremium = true;
         user.membershipType = payment.notes.membershipType;
-
+        console.log("User saved");
 
         await user.save();
 
-        //if (req.body.event === 'payment.captured') {
-        //}
-        //if (req.body.event === 'payment.failed') {
-        //}
+        // Update the user as premium
 
-        return res.status(200).json({ msg: "Webhook received" });
+        // if (req.body.event == "payment.captured") {
+        // }
+        // if (req.body.event == "payment.failed") {
+        // }
 
+        // return success response to razorpay
+
+        return res.status(200).json({ msg: "Webhook received successfully" });
     } catch (err) {
         return res.status(500).json({ msg: err.message });
     }
 });
-
 
 module.exports = paymentRouter;
