@@ -49,7 +49,7 @@ initializeSocket(server);
 connectDB().then(() => {
     console.log("Database connection is established");
     server.listen(process.env.PORT, () => {
-        console.log("server is running on port 7777");
+        console.log("server  is running on port 7777");
     });
 })
     .catch(err => {
