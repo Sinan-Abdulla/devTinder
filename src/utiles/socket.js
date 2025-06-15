@@ -4,10 +4,14 @@ const { Chat } = require('../models/chat');
 const initializeSocket = (server) => {
     const io = new Server(server, {
         cors: {
-            origin: "http://localhost:5173",
+            origin: [
+                "http://localhost:5173",
+                "http://16.176.26.222", // your EC2 instance IP
+            ],
             methods: ["GET", "POST"]
         }
     });
+
 
     io.on("connection", (socket) => {
         console.log("User connected:", socket.id);
